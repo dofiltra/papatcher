@@ -6,7 +6,7 @@ const debug = async () => {
     apiUrl: 'https://dofiltra.com/api/doproxificator?getVersion=true'
   })
   //   console.log('Need new version', await papatcher.getInfo())
-  await papatcher.update()
+  console.log(await papatcher.update())
 }
 
 debug()

@@ -63,10 +63,14 @@ class Papatcher {
       return
     }
 
-    const resp = await fetch(downloadUrl)
-    resp.body?.pipe(unzip.Extract({ path: appPath }))
+    try {
+      const resp = await fetch(downloadUrl)
+      resp.body?.pipe(unzip.Extract({ path: appPath }))
 
-    return !!resp.body
+      return { result: !!resp.body }
+    } catch (error) {
+      return { error }
+    }
   }
 }
 
