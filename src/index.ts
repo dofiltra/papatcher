@@ -5,7 +5,6 @@ import admZip from 'adm-zip'
 
 type TPapatcherSettings = {
   appPath: string
-  filename: string
   apiUrl: string
 }
 
