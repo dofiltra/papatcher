@@ -61,7 +61,7 @@ class Papatcher {
     const { needUpdate, downloadUrl } = await this.getInfo()
 
     if (!force && !needUpdate) {
-      return
+      return { result: false }
     }
 
     try {
