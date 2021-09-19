@@ -1,5 +1,7 @@
+import fetch from 'node-fetch'
 import { getPackageJson } from 'esm-requirer'
 import { sleep } from 'time-helpers'
+import unzip from 'unzip'
 
 type TPapatcherSettings = {
   appPath: string
@@ -46,11 +48,25 @@ class Papatcher {
     return await resp.json()
   }
 
-  async needUpdate() {
+  async getInfo() {
     const currVersion = await this.getCurrentVersion()
-    const lastVersion = await this.getLastVersion()
+    const { version, downloadUrl } = await this.getLastVersion()
 
-    return currVersion < lastVersion
+    return { needUpdate: currVersion < version, downloadUrl }
+  }
+
+  async update(force = false) {
+    const { appPath } = this._settings
+    const { needUpdate, downloadUrl } = await this.getInfo()
+
+    if (!force && !needUpdate) {
+      return
+    }
+
+    const resp = await fetch(downloadUrl)
+    resp.body?.pipe(unzip.Extract({ path: appPath }))
+
+    return !!resp.body
   }
 }
 
